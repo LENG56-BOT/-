@@ -3,24 +3,23 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from datetime import datetime, timedelta
+import pytz
 
 app = Flask(__name__)
 
 # 🔒 Access Token & Channel Secret
-line_bot_api = LineBotApi('2DvhpZfivG8RN2/cwP+u1VF86IVc/lcj9Q2cSAG17beIeJsSUqwdUhxtUk9Coxi0/iq1S4Sf9xtPgh/WamPCqq77vUh4Dzu5nt8VkwE5ZP4ctOn02jQO7tq7yDc8GJ7k+Y5WuWpaKXc6Ud55LCEN9QdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('ba1527c64b8a6b7a22a84675e8879df2')
+line_bot_api = LineBotApi('YOUR_CHANNEL_ACCESS_TOKEN')
+handler = WebhookHandler('YOUR_CHANNEL_SECRET')
 
 # 📌 Webhook Endpoint
 @app.route("/callback", methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
-
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
         abort(400)
-
     return 'OK'
 
 # 💬 ตอบเมื่อพิมพ์ "ชุด3เข้าเวร"
@@ -29,7 +28,8 @@ def handle_message(event):
     user_text = event.message.text.lower()
 
     if "ชุด3เข้าเวร" in user_text:
-        today = datetime.now()
+        tz = pytz.timezone("Asia/Bangkok")
+        today = datetime.now(tz)
         tomorrow = today + timedelta(days=1)
 
         thai_months = [
