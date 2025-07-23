@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
-# 🔒 ใส่ค่า Access Token และ Channel Secret ที่ได้จาก LINE Developer Console
+# 🔒 Access Token & Channel Secret
 line_bot_api = LineBotApi('2DvhpZfivG8RN2/cwP+u1VF86IVc/lcj9Q2cSAG17beIeJsSUqwdUhxtUk9Coxi0/iq1S4Sf9xtPgh/WamPCqq77vUh4Dzu5nt8VkwE5ZP4ctOn02jQO7tq7yDc8GJ7k+Y5WuWpaKXc6Ud55LCEN9QdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('ba1527c64b8a6b7a22a84675e8879df2')
 
@@ -23,13 +23,12 @@ def callback():
 
     return 'OK'
 
-# 💬 ส่วนที่ตอบกลับเมื่อพิมพ์ "ชุด3เข้าเวร"
+# 💬 ตอบเมื่อพิมพ์ "ชุด3เข้าเวร"
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_text = event.message.text.lower()
 
     if "ชุด3เข้าเวร" in user_text:
-        from datetime import datetime, timedelta
         today = datetime.now()
         tomorrow = today + timedelta(days=1)
 
@@ -62,7 +61,3 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=msg)
         )
-
-# 🔁 รัน Flask App
-if __name__ == "__main__":
-    app.run(port=5000)
