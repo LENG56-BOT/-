@@ -7,6 +7,7 @@ def handle_message(event):
         or "ชุด3 เข้าเวร" in user_text
         or "เวรคืนนี้" in user_text
     ):
+        import pytz
         tz = pytz.timezone('Asia/Bangkok')  # ✅ ตั้ง timezone เป็นไทย
         today = datetime.now(tz)
         tomorrow = today + timedelta(days=1)
